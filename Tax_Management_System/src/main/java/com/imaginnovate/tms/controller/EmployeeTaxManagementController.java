@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,11 +34,19 @@ public class EmployeeTaxManagementController {
 		EmployeeResponse response = service.saveEmployee(employee);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
+	
+	@GetMapping("/calculate/tax/{id}")
+	public ResponseEntity<EmployeeTaxCalculatorResponse> getEmployeeTaxForAnEmployee(@PathVariable(required = true) String id) {
+
+		EmployeeTaxCalculatorResponse response = service.calculateTaxForAnEmployee(id);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 
 	@GetMapping("/calculate/tax")
-	public ResponseEntity<EmployeeTaxCalculatorResponse> getEmployeeTax() {
+	public ResponseEntity<EmployeeTaxCalculatorResponse> getEmployeeTaxForAllEmployees() {
 
-		EmployeeTaxCalculatorResponse response = service.calculateTax();
+		EmployeeTaxCalculatorResponse response = service.calculateTaxForAllEmployees();
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

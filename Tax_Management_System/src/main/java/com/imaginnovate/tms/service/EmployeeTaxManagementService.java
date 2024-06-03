@@ -12,7 +12,9 @@ public interface EmployeeTaxManagementService {
 	public EmployeeResponse saveEmployee(EmployeeDto employeeDto);
 
     public List<EmployeeEntity> getAllEmployees();
+    
+    public EmployeeTaxCalculatorResponse calculateTaxForAnEmployee(String id);
 
-    public EmployeeTaxCalculatorResponse calculateTax();
+    public EmployeeTaxCalculatorResponse calculateTaxForAllEmployees();
 
 }

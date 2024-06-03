@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.imaginnovate.tms.exception.EmployeeNotFoundException;
+import com.imaginnovate.tms.exception.InvalidIdTypeException;
 import com.imaginnovate.tms.model.EmployeeEntity;
 import com.imaginnovate.tms.model.EmployeeResponse;
 import com.imaginnovate.tms.utils.EmployeeResponseBuilder;
@@ -55,7 +56,15 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<EmployeeResponse> handleDateTimeParseException(DateTimeParseException exception) {
 
 		return new ResponseEntity<>(EmployeeResponseBuilder.buildApiResponse(new ArrayList<EmployeeEntity>(),
-				Map.of("doj", "doj must be in dd/mm/yyyy format"), false), HttpStatus.NOT_FOUND);
+				Map.of("doj", "doj must be in dd/mm/yyyy format"), false), HttpStatus.BAD_REQUEST);
+
+	}
+	
+	@ExceptionHandler(InvalidIdTypeException.class)
+	public ResponseEntity<EmployeeResponse> handleInvalidIdTypeException(InvalidIdTypeException exception) {
+
+		return new ResponseEntity<>(EmployeeResponseBuilder.buildApiResponse(new ArrayList<EmployeeEntity>(),
+				Map.of(ERROR_MESSAGE, exception.getMessage()), false), HttpStatus.BAD_REQUEST);
 
 	}
 

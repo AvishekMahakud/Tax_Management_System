@@ -3,11 +3,13 @@ package com.imaginnovate.tms.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.imaginnovate.tms.exception.EmployeeNotFoundException;
+import com.imaginnovate.tms.exception.InvalidIdTypeException;
 import com.imaginnovate.tms.model.EmployeeDto;
 import com.imaginnovate.tms.model.EmployeeEntity;
 import com.imaginnovate.tms.model.EmployeeResponse;
@@ -45,7 +47,37 @@ public class EmployeeTaxManagementServiceImpl implements EmployeeTaxManagementSe
 	}
 
 	@Override
-	public EmployeeTaxCalculatorResponse calculateTax() {
+	public EmployeeTaxCalculatorResponse calculateTaxForAnEmployee(String id) {
+
+		Integer empId = 0;
+
+		try {
+			empId = Integer.parseInt(id);
+		} catch (NumberFormatException e) {
+			
+			throw new InvalidIdTypeException("Id must be of type Integer");
+		}
+
+		Optional<EmployeeEntity> optional = repository.findById(empId);
+
+		if (optional.isPresent()) {
+
+			EmployeeEntity employee = optional.get();
+
+			EmployeeTaxCalculator calculator = EmployeeTaxCalculator.build(employee.getId(), employee.getFirstName(),
+					employee.getLastName(), TaxCalculationUtils.calculateYearlySalary(employee),
+					TaxCalculationUtils.calculateTax(employee), TaxCalculationUtils.calculateCess(employee));
+
+			return EmployeeTaxCalculatorResponse.build(List.of(calculator), Map.of(), true);
+
+		} else {
+			throw new EmployeeNotFoundException("No employee found for the id : " + empId);
+		}
+
+	}
+
+	@Override
+	public EmployeeTaxCalculatorResponse calculateTaxForAllEmployees() {
 
 		List<EmployeeEntity> employees = getAllEmployees();
 
