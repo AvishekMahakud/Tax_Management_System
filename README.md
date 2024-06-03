@@ -37,11 +37,27 @@ The Tax Management System is a Spring Boot application designed to manage employ
     ```sh
     cd Tax_Management_System
     ```
-3. Configure the database connection in `application.properties`:
+3. Configure the database connection in `application.yml`:
     ```properties
-    spring.datasource.url=<Your DB specific url>
-    spring.datasource.username=<your username>
-    spring.datasource.password=<your password>
+    server:
+      port: 9090
+
+   spring:
+      application:
+        name: Tax_Management_System
+      datasource:
+        driverClassName: org.h2.Driver
+        url: jdbc:h2:mem:testdb
+      h2:
+       console:
+         enabled: true
+      jpa:
+         database-platform: org.hibernate.dialect.H2Dialect
+    
+      jackson:
+         date-format: dd/MM/yyyy
+
+
     ```
 4. Build the project:
     ```sh
