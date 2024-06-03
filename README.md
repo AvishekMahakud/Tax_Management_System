@@ -56,6 +56,7 @@ The Tax Management System is a Spring Boot application designed to manage employ
 - **Endpoints**:
     - `POST [/tms/employee/register](http://localhost:9090/tms/employee/register)`: Register a new employee.
     - `GET [/tms/employee/calculate/tax](http://localhost:9090/tms/employee/calculate/tax)`: Calculate tax details for all employees.
+    - `GET [/tms/employee/calculate/tax/{id}](http://localhost:9090/tms/employee/calculate/tax/{id})`: Calculate tax details for an employee.
 
 ## Contributing
 Contributions are welcome! Please fork the repository and submit pull requests.
